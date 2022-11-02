@@ -1,7 +1,7 @@
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, LineElement, Legend, RadialLinearScale, LinearScale, Point, PointElement } from 'chart.js';
-import { Doughnut, Pie, PolarArea, Radar } from 'react-chartjs-2';
-ChartJS.register(ArcElement, Tooltip, Legend, RadialLinearScale, LinearScale, PointElement, LineElement);
+import { Chart as ChartJS, ArcElement, BarElement, Title, Tooltip, LineElement, Legend, RadialLinearScale, LinearScale, Point, PointElement, CategoryScale } from 'chart.js';
+import { Doughnut, Pie, PolarArea, Radar, Bar } from 'react-chartjs-2';
+ChartJS.register(ArcElement, CategoryScale, Title, BarElement, Tooltip, Legend, RadialLinearScale, LinearScale, PointElement, LineElement);
 import { trpc } from "../utils/trpc";
 import { faker } from '@faker-js/faker';
 import Header from '../components/head';
@@ -48,6 +48,33 @@ export default function GraphPage() {
     ],
   }
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      }
+    },
+  };
+
+  const labels1 = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+  const data1 = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: labels1.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Dataset 2',
+        data: labels1.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
+
   return (
     <>
       <Header />
@@ -83,9 +110,8 @@ export default function GraphPage() {
           <div className="chart-container w-1/4 h-1/4">
             <PolarArea data={data} />
           </div>
-
           <div className="chart-container w-1/4 h-1/4">
-            <Radar data={data} />
+            <Bar options={options} data={data} />
           </div>
         </div>
       </main>
